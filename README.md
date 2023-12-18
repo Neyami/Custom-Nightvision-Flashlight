@@ -1,10 +1,10 @@
-Adds customizable flashlight and nightvision
-
+Adds customizable flashlight and nightvision  
+Edit flcolors.txt to add/remove colors.
 
 # Commands
 .flashlight  
-.flashlight color - Toggles the flashlight. Default is white if no color is specified  
-.flashlight help - Prints flashlight colors to console  
+.flashlight help - Prints information about the command to console  
+.flashlight color - Toggles the flashlight with the chosen color from the list. Default is white if no color is specified  
 .flashlight list - Prints flashlight colors to console  
 .flashlight r g b - Toggles the flashlight with custom RGB-values  
 .flashlight random - Toggles the flashlight with random RGB  
@@ -14,6 +14,16 @@ Adds customizable flashlight and nightvision
 <BR>
 
 .nightvision  
+.nightvision help - Prints information about the command to console  
+.nightvision color - Toggles nightvision with the chosen color from the list. Default is green if no color is specified  
+.nightvision list - Prints nightvision colors to console  
+.nightvision r g b - Toggles nightvision with custom RGB-values  
+.nightvision random - Toggles nightvision with random RGB  
+.nightvision randomcolor - Toggles nightvision with a random color from the list  
+.nightvision rainbow - Toggles nightvision with shifting colors  
+
+<BR>
+
 .fl_radius (#)    -  Sets the corresponding CVar.  
 .nv_radius (#)    -  Sets the corresponding CVar.  
 .flnv_drain (#)   -  Sets the corresponding CVar.  
