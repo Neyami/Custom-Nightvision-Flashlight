@@ -1,5 +1,6 @@
 Adds customizable flashlight and nightvision  
-Edit flcolors.txt to add/remove colors.
+Edit flcolors.txt to add/remove colors.  
+Edit blacklist.txt to disable the plugin on any desired maps
 
 # Commands
 .flashlight      - Toggles custom flashlight on/off with default values  
