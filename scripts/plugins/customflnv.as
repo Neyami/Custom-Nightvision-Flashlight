@@ -3,6 +3,10 @@ void PluginInit()
 	g_Module.ScriptInfo.SetAuthor( "Nero" );
 	g_Module.ScriptInfo.SetContactInfo( "https://discord.gg/0wtJ6aAd7XOGI6vI" );
 
+	@CustomLights::cvar_Enabled = CCVar( "flnv-enabled", 1, "Plugin on/off. (default: 1)", ConCommandFlag::AdminOnly );
+
+	if( !CustomLights::cvar_Enabled.GetBool() ) return;
+
 	g_Hooks.RegisterHook( Hooks::Player::PlayerKilled, @CustomLights::PlayerKilled );
 	g_Hooks.RegisterHook( Hooks::Player::ClientDisconnect, @CustomLights::ClientDisconnect );
 	g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @CustomLights::ClientPutInServer );
@@ -24,6 +28,23 @@ void PluginInit()
 
 void MapInit()
 {
+	CustomLights::g_MapBlacklist.resize(0);
+	CustomLights::ReadMapsFile();
+	CustomLights::cvar_Enabled.SetInt(1);
+
+	//loop through the disabled map list
+	for( uint i = 0; i < CustomLights::g_MapBlacklist.length(); i++ )
+	{
+		if( g_Engine.mapname == CustomLights::g_MapBlacklist[i] )
+		{
+			g_Game.AlertMessage( at_logged, "[CUSTOMFLNV] Disabled map detected!\n" );
+			CustomLights::cvar_Enabled.SetInt(0);
+			break;
+		}
+	}
+
+	if( !CustomLights::cvar_Enabled.GetBool() ) return;
+
 	g_SoundSystem.PrecacheSound( "player/hud_nightvision.wav" );
 	g_SoundSystem.PrecacheSound( "items/flashlight2.wav" );
 
@@ -54,7 +75,7 @@ void MapInit()
 namespace CustomLights
 {
 
-const string g_ColorFile = "scripts/plugins/flcolors.txt";
+const string g_ColorFile = "scripts/plugins/customflnv/flcolors.txt";
 const string SOUND_FLASHLIGHT_ON = "items/flashlight1.wav";
 const string SOUND_FLASHLIGHT_OFF = "items/flashlight1.wav";
 const bool g_bUseCustomFlashlightSound = false;
@@ -75,6 +96,7 @@ CClientCommand flnv_charge( "flnv_charge", "Rate at which the battery charges. (
 
 CScheduledFunction@ g_pFLNVThink = null;
 CScheduledFunction@ g_pFLNVRainbowThink = null;
+CCVar@ cvar_Enabled;
 CCVar@ g_flDrain;
 CCVar@ g_flCharge;
 CCVar@ g_iFlashlightRadius;
@@ -85,6 +107,8 @@ dictionary g_LightColors;
 bool g_bColorsLoaded = false;
 
 array<string> @g_ColorListKeys;
+array<string> g_MapBlacklist;
+const string g_szBlacklistFile = "scripts/plugins/customflnv/blacklist.txt";
 
 enum LightModes
 {
@@ -196,6 +220,12 @@ void ToggleLight( const CCommand@ args )
 
 	if( pPlayer !is null )
 	{
+		if( !CustomLights::cvar_Enabled.GetBool() )
+		{
+			g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "[FLNV] PLUGIN IS DISABLED ON THIS MAP.\n" );
+			return;
+		}
+
 		const string sCommand = args.Arg(0);
 		LightModes uiMode = sCommand == ".flashlight" ? MODE_FLASHLIGHT : MODE_NIGHTVISION;
 
@@ -645,6 +675,29 @@ void LightSettings( const CCommand@ args )
 			g_flCharge.SetFloat( atof(args.Arg(1)) );
 			g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, "\"flnv_charge\" changed to \"" + g_flCharge.GetFloat() + "\"\n" );
 		}
+	}
+}
+
+void ReadMapsFile()
+{
+	File@ file = g_FileSystem.OpenFile(g_szBlacklistFile, OpenFile::READ);
+
+	if( file !is null and file.IsOpen() )
+	{
+		while( !file.EOFReached() )
+		{
+			string sLine;
+			file.ReadLine( sLine );
+			if( sLine.SubString(sLine.Length()-1,1) == " " or sLine.SubString(sLine.Length()-1,1) == "\n" or sLine.SubString(sLine.Length()-1,1) == "\r" or sLine.SubString(sLine.Length()-1,1) == "\t" )
+				sLine = sLine.SubString( 0, sLine.Length()-1 );
+
+			if( sLine.SubString(0,1) == "#" or sLine.IsEmpty() ) //comment
+				continue;
+
+			g_MapBlacklist.insertLast(sLine);
+		}
+
+		file.Close();
 	}
 }
 } //end of namespace CustomLights
