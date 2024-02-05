@@ -2,7 +2,7 @@ Adds customizable flashlight and nightvision
 Edit flcolors.txt to add/remove colors.
 
 # Commands
-.flashlight  
+.flashlight      - Toggles custom flashlight on/off with default values  
 .flashlight help - Prints information about the command to console  
 .flashlight color - Toggles the flashlight with the chosen color from the list. Default is white if no color is specified  
 .flashlight list - Prints flashlight colors to console  
@@ -13,7 +13,7 @@ Edit flcolors.txt to add/remove colors.
 
 <BR>
 
-.nightvision  
+.nightvision      - Toggles custom nightvision on/off with default values  
 .nightvision help - Prints information about the command to console  
 .nightvision color - Toggles nightvision with the chosen color from the list. Default is green if no color is specified  
 .nightvision list - Prints nightvision colors to console  
