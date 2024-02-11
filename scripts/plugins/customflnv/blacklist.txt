@@ -1,4 +1,23 @@
-mapname1
-mapname2
-mapname3
 #comment
+
+#mapname
+#map
+#level
+
+#* = wildcard
+#mapseries_* will blacklist all maps beginning with mapseries_
+
+aomdc_*
+ast
+of_utbm
+ss
+ops_*
+evasion
+htc_*
+nw
+shadv
+bootsquad
+want
+sc5x_bonus
+zombie_nights_*
+shitty_pubg
