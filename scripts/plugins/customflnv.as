@@ -32,12 +32,32 @@ void MapInit()
 	CustomLights::ReadMapsFile();
 	CustomLights::cvar_Enabled.SetInt(1);
 
+	bool bWildcard = false;
+
 	//loop through the disabled map list
 	for( uint i = 0; i < CustomLights::g_MapBlacklist.length(); i++ )
 	{
-		if( g_Engine.mapname == CustomLights::g_MapBlacklist[i] )
+		string sBuffer = CustomLights::g_MapBlacklist[i];
+
+		if( sBuffer.SubString(sBuffer.Length()-1, 1) == "*" )
 		{
-			g_Game.AlertMessage( at_logged, "[CUSTOMFLNV] Disabled map detected!\n" );
+			bWildcard = true;
+			sBuffer = sBuffer.SubString(0, sBuffer.Length()-1);
+		}
+
+		if( bWildcard )
+		{
+			string sMatch = g_Engine.mapname;
+			if( sBuffer == sMatch.SubString(0, sBuffer.Length()) )
+			{
+				//g_Game.AlertMessage( at_logged, "[CUSTOMFLNV] Disabled map detected!\n" );
+				CustomLights::cvar_Enabled.SetInt(0);
+				break;
+			}
+		}
+		else if( g_Engine.mapname == CustomLights::g_MapBlacklist[i] )
+		{
+			//g_Game.AlertMessage( at_logged, "[CUSTOMFLNV] Disabled map detected!\n" );
 			CustomLights::cvar_Enabled.SetInt(0);
 			break;
 		}
@@ -722,8 +742,15 @@ void ReadMapsFile()
 *	-------------------------
 *	- Rainbow color is no longer admin-only for nightvision
 *	-------------------------
+*
+*	Version: 	1.2.1
+*	Date: 		27 February 2024
+*	-------------------------
+*	- Added map blacklist
+*	-------------------------
 */
 /*
 *	ToDo
 *
+* Hook into normal flashlight command?
 */
