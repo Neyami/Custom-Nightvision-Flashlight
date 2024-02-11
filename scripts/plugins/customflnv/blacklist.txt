@@ -4,20 +4,19 @@
 #map
 #level
 
-#* = wildcard
-#mapseries_* will blacklist all maps beginning with mapseries_
+#mapseries_ will blacklist all maps beginning with mapseries_
 
-aomdc_*
+aomdc
 ast
 of_utbm
 ss
-ops_*
+ops_
 evasion
-htc_*
+htc_
 nw
 shadv
 bootsquad
 want
 sc5x_bonus
-zombie_nights_*
+zombie_nights_
 shitty_pubg
