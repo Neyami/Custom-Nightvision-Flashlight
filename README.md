@@ -1,6 +1,23 @@
 Adds customizable flashlight and nightvision  
 Edit flcolors.txt to add/remove colors.  
-Edit blacklist.txt to disable the plugin on any desired maps
+Edit blacklist.txt to disable the plugin on any desired maps  
+
+<BR>
+
+# INSTALLATION  
+1) Put `customflnv.as` and the folder `customflnv` in `svencoop_addon\scripts\plugins\`
+2) Put the following in `svencoop\default_plugins.txt`:
+
+```
+    "plugin"
+    {
+        "name" "Custom Flashlight and Nightvision"
+        "script" "customflnv"
+    }
+```
+3) Enter `as_reloadplugins` in the console if the game is already running
+
+<BR>
 
 # Commands
 .flashlight      - Toggles custom flashlight on/off with default values  
